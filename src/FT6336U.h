@@ -124,9 +124,9 @@ typedef struct {
 class FT6336U
 {
 public:
-    FT6336U(uint8_t rst_n, uint8_t int_n);
+    FT6336U(int8_t rst_n, int8_t int_n);
 #if defined(ESP32) || defined(ESP8266)
-    FT6336U(int8_t sda, int8_t scl, uint8_t rst_n, uint8_t int_n);
+    FT6336U(int8_t sda, int8_t scl, int8_t rst_n, int8_t int_n);
 #endif
     virtual ~FT6336U();
 
@@ -190,8 +190,8 @@ public:
 private:
     int8_t sda = -1;
     int8_t scl = -1;
-    uint8_t rst_n = -1;
-    uint8_t int_n = -1;
+    int8_t rst_n = -1;
+    int8_t int_n = -1;
 
     uint8_t readByte(uint8_t addr);
     void writeByte(uint8_t addr, uint8_t data);

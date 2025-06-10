@@ -10,11 +10,11 @@
 
 #include <Wire.h>
 
-FT6336U::FT6336U(uint8_t rst_n, uint8_t int_n)
+FT6336U::FT6336U(int8_t rst_n, int8_t int_n)
 : rst_n(rst_n), int_n(int_n) {
 }
 #if defined(ESP32) || defined(ESP8266)
-FT6336U::FT6336U(int8_t sda, int8_t scl, uint8_t rst_n, uint8_t int_n)
+FT6336U::FT6336U(int8_t sda, int8_t scl, int8_t rst_n, int8_t int_n)
 : sda(sda), scl(scl), rst_n(rst_n), int_n(int_n)  {
 }
 #endif
@@ -35,13 +35,19 @@ void FT6336U::begin(void) {
     Wire.begin();
 #endif
     // Int Pin Configuration
-    pinMode(int_n, INPUT);
+    if (int_n >= 0) {
+        pinMode(int_n, INPUT);
+    }
+
     // Reset Pin Configuration
-    pinMode(rst_n, OUTPUT);
-    digitalWrite(rst_n, LOW);
-    delay(10);
-    digitalWrite(rst_n, HIGH);
-    delay(500);
+    if (rst_n >= 0) {
+        pinMode(rst_n, OUTPUT);
+        digitalWrite(rst_n, LOW);
+        delay(10);
+        digitalWrite(rst_n, HIGH);
+    }
+
+    delay(100);
 }
 uint8_t FT6336U::read_device_mode(void) {
     return (readByte(FT6336U_ADDR_DEVICE_MODE) & 0x70) >> 4;
